@@ -15,6 +15,8 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+                    <a href="https://github.com/jeroennoten/Laravel-AdminLTE">admin repo</a>
+
                 </div>
             </div>
         </div>
