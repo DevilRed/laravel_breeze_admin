@@ -16,6 +16,8 @@
 
                     {{ __('You are logged in!') }}
                     <a href="https://github.com/jeroennoten/Laravel-AdminLTE">admin repo</a>
+                        <br>
+                    <a href="{{ 'dashboard' }}">go to dashboard</a>
 
                 </div>
             </div>
