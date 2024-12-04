@@ -1,6 +1,6 @@
-@extends('adminlte::page')
+@extends('layouts.admin-layout')
 
-@section('title', 'Dashboard')
+@section('title', 'Staff Dashboard')
 
 @section('content_header')
     <h1>Staff Dashboard</h1>
