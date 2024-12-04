@@ -376,6 +376,11 @@ return [
                 ],
             ],
         ],
+        [
+            'text'       => 'new item Eventos',
+            'icon'       => 'fas fa-building',
+            'url'        => '/events',
+        ],
         ['header' => 'labels'],
         [
             'text' => 'important',
