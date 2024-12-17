@@ -377,9 +377,9 @@ return [
             ],
         ],
         [
-            'text'       => 'new item Eventos',
+            'text'       => 'Rooms',
             'icon'       => 'fas fa-building',
-            'url'        => '/events',
+            'url'        => '/rooms',
         ],
         ['header' => 'labels'],
         [
