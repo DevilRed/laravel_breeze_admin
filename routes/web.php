@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReservationController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -31,3 +32,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/rooms/{id}', [RoomController::class, 'view'])->name('rooms.view');
+Route::get('/book/{room}', ReservationController::class)->name('reservation.book');
