@@ -11,8 +11,8 @@
                     @csrf
                     <div class="form-group>
                         <label for="start_time" class="form-label">Start Date</label>
-                        <input type="date" name="date" class="form-control" required>
-                    </form>
+                        <input type="text" name="date" class="form-control date" required>
+
                 <div class="mb-4">
                     <label for="startTime" class="form-label">Start Time</label>
                     <div class="input-group">
