@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -18,36 +18,52 @@ class AddPermissionsAndRoles extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         $permissionNames = [];
+        $existingPermissions = DB::table('permissions')->select('name', 'guard_name')->get()->toArray();
 
+        // define permissions for each group
         $permissionsGroups = [
-            ['group_name' => 'Post', 'permissions' => ['create post', 'view post', 'update post', 'delete post']],
-            ['group_name' => 'Project', 'permissions' => ['create project', 'view project', 'update project', 'delete project']],
-            ['group_name' => 'User', 'permissions' => ['create user', 'view user', 'update user', 'delete user']],
-
-            // add permission as needed same format
-
+            ['group_name' => 'Admin',
+                'permissions' => ['create room', 'view room', 'update room', 'delete room', 'create reservation', 'view reservation', 'update reservation', 'delete reservation']
+            ],
+            ['group_name' => 'Client',
+                'permissions' => ['create client', 'login', 'logout', 'create reservation']
+            ],
         ];
+
         foreach ($permissionsGroups as $group) {
             $group_name = $group['group_name'];
             $permissions = $group['permissions'];
 
             foreach ($permissions as $permission) {
-                // Add individual permissions within the group
-                $permissionNames[] = ['guard_name' => 'web', 'name' => $permission, 'group_name' => $group_name, 'created_at' => now(), 'updated_at' => now()];
+                $exists = false;
+                foreach ($existingPermissions as $existingPermission) {
+                    if ($existingPermission->name === $permission && $existingPermission->guard_name === 'web') {
+                        $exists = true;
+                        break;
+                    }
+                }
+                if (!$exists) {
+                    $permissionNames[] = ['guard_name' => 'web', 'name' => $permission, 'group_name' => $group_name, 'created_at' => now(), 'updated_at' => now()];
+                    $existingPermissions[] = (object) ['name' => $permission, 'guard_name' => 'web'];
+                }
             }
         }
 
         Permission::insert($permissionNames);
 
-        // Admin role gets all permissions
-        $adminPermissions = Permission::whereIn('group_name', ['Post', 'Project', 'User'])->pluck('name')->toArray();
-        $admin = Role::create(['name' => 'admin'])->givePermissionTo($adminPermissions);
+        // create roles
+        $adminRole = Role::create(['name' => 'admin']);
+        $clientRole = Role::create(['name' => 'client']);
 
-        // Staff role gets specific group permissions
-        $staffPermissions = Permission::whereIn('group_name', ['Post','Project'])->pluck('name')->toArray();
-        $staff = Role::create(['name' => 'staff'])->givePermissionTo($staffPermissions);
+        // Assign permissions to roles
+        $adminPermissions = Permission::where('group_name', 'Admin')->pluck('name')->toArray();
+        $adminRole->givePermissionTo($adminPermissions);
 
-        $adminAccount =  User::firstOrCreate([
+        $clientPermissions = Permission::where('group_name', 'Client')->pluck('name')->toArray();
+        $clientRole->givePermissionTo($clientPermissions);
+
+        // Create users and assign roles
+        $adminAccount = User::firstOrCreate([
             'name' => 'Admin test',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('password'),
@@ -55,18 +71,16 @@ class AddPermissionsAndRoles extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        $adminAccount->assignRole($adminRole);
 
-        $adminAccount->assignRole($admin);
-
-        $staffAccount =  User::firstOrCreate([
-            'name' => 'Staff test',
-            'email' => 'staff@gmail.com',
+        $clientAccount = User::firstOrCreate([
+            'name' => 'Client test',
+            'email' => 'client@gmail.com',
             'password' => bcrypt('password'),
             'status' => 'active',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
-        $staffAccount->assignRole($staff);
+        $clientAccount->assignRole($clientRole);
     }
 }
