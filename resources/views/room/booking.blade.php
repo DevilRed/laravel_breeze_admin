@@ -6,6 +6,15 @@
             <div class="col-md-12">
                 <h1>Room Booking Form</h1>
                 <a class="btn btn-primary btn-sm" href="{{ route('home') }}"> {{ __('Back') }}</a>
+                {{--@if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif--}}
 
                 <form action="{{ route('reservation.book', ['room' => $room]) }}" method="post">
                     @csrf
@@ -16,15 +25,17 @@
                 <div class="mb-4">
                     <label for="startTime" class="form-label">Start Time</label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-clock"></i></span>
-                        <input type="time" class="form-control" id="startTime" required>
+                        <input type="time" class="form-control" id="startTime" name="start_time" required>
                     </div>
                 </div>
                 <div class="mb-4">
                     <label for="endTime" class="form-label">End Time</label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-clock-fill"></i></span>
-                        <input type="time" class="form-control" id="endTime" required>
+                        <input type="time" class="form-control w-100 @error('end_time') is-invalid @enderror" id="endTime" name="end_time" required>
+
+                        @error('end_time')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 <div class="d-grid gap-2">
