@@ -20,18 +20,18 @@
                     @csrf
                     <div class="form-group>
                         <label for="start_time" class="form-label">Start Date</label>
-                        <input type="text" name="date" class="form-control date" required>
+                        <input type="text" name="date" class="form-control date" value="{{ old('date') }}" required>
 
                 <div class="mb-4">
                     <label for="startTime" class="form-label">Start Time</label>
                     <div class="input-group">
-                        <input type="time" class="form-control" id="startTime" name="start_time" required>
+                        <input type="time" class="form-control" id="startTime" name="start_time" value="{{ old('start_time') }}" required>
                     </div>
                 </div>
                 <div class="mb-4">
                     <label for="endTime" class="form-label">End Time</label>
                     <div class="input-group">
-                        <input type="time" class="form-control w-100 @error('end_time') is-invalid @enderror" id="endTime" name="end_time" required>
+                        <input type="time" class="form-control w-100 @error('end_time') is-invalid @enderror" id="endTime" name="end_time" value="{{ old('end_time') }}" required>
 
                         @error('end_time')
                         <div class="alert alert-danger">{{ $message }}</div>
