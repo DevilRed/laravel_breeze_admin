@@ -22,6 +22,6 @@ class EndTimeAfterStartTime implements ValidationRule
         $startTime = Carbon::createFromFormat('H:i', $this->startTime);
         $endTime = Carbon::createFromFormat('H:i', $value);
 
-        $endTime->diffInMinutes($startTime) >= 60 ?: $fail('The :attribute must be at least 1 hour after the start time.');
+        $startTime->diffInMinutes($endTime, false) >= 60 ?: $fail('The :attribute must be at least 1 hour after the start time.');
     }
 }
