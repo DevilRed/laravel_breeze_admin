@@ -33,3 +33,4 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/rooms/{id}', [RoomController::class, 'view'])->name('rooms.view');
 Route::get('/book/{room}', ReservationController::class)->name('reservation.book');
+Route::post('/book/{room}', [ReservationController::class, 'store'])->name('reservation.store');
