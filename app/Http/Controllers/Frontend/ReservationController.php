@@ -1,22 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Frontend;
 
+use App\Http\Controllers\Controller;
 use App\Models\Room;
 use App\Rules\EndTimeAfterStartTime;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ReservationController extends Controller
 {
-    public function __invoke(Room $room)
+    public function __invoke(Room $room): View
     {
         return view('room.booking', [
             'room' => $room
         ]);
     }
 
-    public function store(Request $request, Room $room)
+    public function store(Request $request, Room $room): RedirectResponse
     {
         $request->validate([
             'start_time' => ['required', 'date_format:H:i'],

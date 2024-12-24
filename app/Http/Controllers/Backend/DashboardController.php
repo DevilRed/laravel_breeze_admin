@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\View\View;
 
 class DashboardController extends Controller
 {
-    public function render()
+    public function render(): View
     {
         $user = Auth::user();
 
