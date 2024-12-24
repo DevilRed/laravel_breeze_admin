@@ -2,10 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\RoomController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\Frontend\RoomController;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\ReservationController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -19,18 +18,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::group([
-    'middleware' => ['auth', 'role:admin|staff|super-admin'],
-], function() {
-    Route::get('dashboard', [DashboardController::class, 'render'])->name('dashboard');
-});
 Route::resource('rooms', RoomController::class);
 
 require __DIR__.'/auth.php';
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/rooms/{id}', [RoomController::class, 'view'])->name('rooms.view');
 Route::get('/book/{room}', ReservationController::class)->name('reservation.book');
 Route::post('/book/{room}', [ReservationController::class, 'store'])->name('reservation.store');
