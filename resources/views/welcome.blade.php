@@ -18,7 +18,7 @@
             <td>{{ $room->name }}</td>
             <td>
                 <a href="{{ route('rooms.view', ['id' => $room->id]) }}" class="btn btn-primary">View</a>
-                <a href="{{ route('reservation.book', ['room' => $room]) }}" class="btn btn-primary">Book</a>
+                <a href="{{ route('reservation.book', ['room' => $room]) }}" class="btn btn-primary @guest disabled @endguest">Book</a>
             </td>
         </tr>
     @endforeach
